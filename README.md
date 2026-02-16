@@ -16,3 +16,8 @@ server
 npm init -y
 npm install express prisma @prisma/client cors dotenv bcrypt jsonwebtoken
 npm install -D nodemon
+
+npx prisma init
+
+env
+DATABASE_URL="mysql://root:password@localhost:3306/nativebonechop"
