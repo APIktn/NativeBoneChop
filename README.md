@@ -14,9 +14,9 @@ npm install @react-navigation/native-stack
 server
 
 npm init -y
-npm install express prisma @prisma/client cors dotenv bcrypt jsonwebtoken
-npm install -D nodemon
-
+npm install express @prisma/client cors dotenv bcrypt jsonwebtoken
+npm install -D prisma typescript ts-node-dev @types/node @types/express @types/cors @types/bcrypt @types/jsonwebtoken
+npx tsc --init
 npx prisma init
 
 env
