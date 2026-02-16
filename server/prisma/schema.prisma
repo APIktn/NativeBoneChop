@@ -4,5 +4,26 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  userCode       String   @unique
+  userName       String?
+  userEmail      String   @unique
+  password       String
+  firstName      String
+  lastName       String
+  address        String
+  tel            String
+  verifyEmail    String
+  profileImage   String
+  uploadImage    String?
+  uploadImageId  String
+  createBy       String
+  createDateTime DateTime @default(now())
+  updateBy       String
+  updateDateTime DateTime
+
+  @@map("tbl_mas_users")
 }
