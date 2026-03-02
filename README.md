@@ -1,7 +1,9 @@
 tech stack
 //////////////////////////////////////////////////
 client
-npx expo start
+npx expo start 
+npx expo start --tunnel
+npx expo start --no-dev --minify --tunnel
 
 npx create-expo-app client
 npx expo install expo-secure-store

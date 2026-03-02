@@ -25,8 +25,13 @@ export default function RootLayout() {
   if (!loaded) return null;
 
   return (
-    <AuthProvider>
-      <Stack />
-    </AuthProvider>
+<AuthProvider>
+  <Stack
+    screenOptions={{
+      headerShown: false,
+      contentStyle: { backgroundColor: "transparent" }
+    }}
+  />
+</AuthProvider>
   );
 }

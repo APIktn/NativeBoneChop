@@ -25,7 +25,7 @@ export default function NotFound() {
   return (
     <View style={styles.wrapper}>
       <Video
-        source={require("../assets/video/NotFound.mp4")}
+        source={require("../../assets/video/NotFound.mp4")}
         style={{
           position: "absolute",
           width: videoWidth,
