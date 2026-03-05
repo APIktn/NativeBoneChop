@@ -127,15 +127,16 @@ export const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   carouselCard: {
-    height: 300,
+    /* height set inline (responsive) */
   },
-  carouselContent: {
-    flex: 1,
+  carouselInner: {
+    ...StyleSheet.absoluteFillObject,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 8,
     gap: 8,
+    zIndex: 2,
   },
   carouselArrow: {
     width: 40,
@@ -151,15 +152,7 @@ export const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
   },
-  carouselSide: {
-    width: 100,
-    height: 100,
-    opacity: 0.55,
-  },
-  carouselCenter: {
-    width: 220,
-    height: 220,
-  },
+  /* carouselSide / carouselCenter → sized inline (responsive) */
 
   /* ── video cards ── */
   videoCard: {

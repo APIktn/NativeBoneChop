@@ -4,7 +4,7 @@ import {
   ValidateNested,
   ArrayMinSize,
 } from 'class-validator'
-import { Type } from 'class-transformer'
+import { Type, Transform } from 'class-transformer'
 import { ProductLineDto } from './product-line.dto'
 
 export class CreateProductDto {
@@ -18,6 +18,12 @@ export class CreateProductDto {
   @IsString()
   description: string
 
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      try { return JSON.parse(value) } catch { return value }
+    }
+    return value
+  })
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })

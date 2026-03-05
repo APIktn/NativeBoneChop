@@ -8,12 +8,18 @@ export type AuthUser = {
   userName: string | null;
   firstName: string;
   lastName: string;
+  displayName?: string;
+  address?: string | null;
+  tel?: string | null;
+  imageProfile?: string | null;
+  imageUpload?: string | null;
 };
 
 type AuthContextType = {
   user: AuthUser | null;
   isLoading: boolean;
   setUser: (user: AuthUser) => void;
+  updateUser: (updates: Partial<AuthUser>) => void;
   logout: () => Promise<void>;
 };
 
@@ -29,8 +35,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const token = await tokenStorage.getAccessToken();
         if (token) {
-          const res = await authService.me(token);
-          setUserState(res.data.user);
+          const res = await authService.me();
+          const raw = res.data.user;
+          // server /auth/me returns "profileImage", map to our "imageProfile"
+          setUserState({ ...raw, imageProfile: raw.profileImage ?? raw.imageProfile });
         }
       } catch {
         await tokenStorage.clearTokens();
@@ -41,6 +49,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const setUser = (user: AuthUser) => setUserState(user);
+
+  const updateUser = (updates: Partial<AuthUser>) =>
+    setUserState((prev) => (prev ? { ...prev, ...updates } : prev));
 
   const logout = async () => {
     try {
@@ -54,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, setUser, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, setUser, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

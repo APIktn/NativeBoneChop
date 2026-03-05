@@ -8,6 +8,7 @@ npx expo start --no-dev --minify --tunnel
 npx create-expo-app client
 npx expo install expo-secure-store
 npx expo install expo-av
+npx expo install expo-image-picker
 npx expo install @expo/vector-icons
 npm install axios
 npm install --save-dev react-test-renderer@19.1.0

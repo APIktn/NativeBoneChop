@@ -130,16 +130,26 @@ function CarouselSection() {
   const { width } = useWindowDimensions();
   const showSide = width >= 500;
 
+  /* responsive sizes */
+  const cardHeight  = Math.max(260, Math.min(420, width * 0.55));
+  const centerSize  = Math.min(220, width * 0.40);
+  const sideSize    = Math.min(100, width * 0.16);
+
+  /* fade-out → change index → fade-in (after re-render) */
   const go = (dir: 'prev' | 'next') => {
-    Animated.timing(fadeAnim, { toValue: 0, duration: 130, useNativeDriver: true }).start(() => {
+    Animated.timing(fadeAnim, { toValue: 0, duration: 150, useNativeDriver: true }).start(() => {
       setIdx((i) =>
         dir === 'prev'
           ? (i === 0 ? CAROUSEL_IMAGES.length - 1 : i - 1)
-          : (i === CAROUSEL_IMAGES.length - 1 ? 0 : i + 1)
+          : (i === CAROUSEL_IMAGES.length - 1 ? 0 : i + 1),
       );
-      Animated.timing(fadeAnim, { toValue: 1, duration: 130, useNativeDriver: true }).start();
     });
   };
+
+  /* fade-in fires AFTER new idx is rendered */
+  useEffect(() => {
+    Animated.timing(fadeAnim, { toValue: 1, duration: 150, useNativeDriver: true }).start();
+  }, [idx]);
 
   const leftIdx  = (idx - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length;
   const rightIdx = (idx + 1) % CAROUSEL_IMAGES.length;
@@ -148,42 +158,43 @@ function CarouselSection() {
     <View style={styles.carouselSection}>
       <Text style={styles.carouselOutTitle}>select your style!</Text>
 
-      <ImageBackground source={LAND_2} style={[styles.card, styles.carouselCard]} imageStyle={innerImg}>
+      <ImageBackground
+        source={LAND_2}
+        style={[styles.card, styles.carouselCard, { height: cardHeight }]}
+        imageStyle={innerImg}
+      >
         <View style={styles.cardOverlay} />
-        <View style={[styles.cardContent, styles.carouselContent]}>
-          {/* prev */}
+
+        {/* absoluteFill so content always fills the card */}
+        <View style={styles.carouselInner}>
           <Pressable style={styles.carouselArrow} onPress={() => go('prev')}>
             <Text style={styles.carouselArrowText}>‹</Text>
           </Pressable>
 
-          {/* left side */}
           {showSide && (
             <Image
               source={CAROUSEL_IMAGES[leftIdx]}
-              style={styles.carouselSide}
+              style={{ width: sideSize, height: sideSize, opacity: 0.5 }}
               contentFit="contain"
             />
           )}
 
-          {/* center */}
           <Animated.View style={{ opacity: fadeAnim }}>
             <Image
               source={CAROUSEL_IMAGES[idx]}
-              style={styles.carouselCenter}
+              style={{ width: centerSize, height: centerSize }}
               contentFit="contain"
             />
           </Animated.View>
 
-          {/* right side */}
           {showSide && (
             <Image
               source={CAROUSEL_IMAGES[rightIdx]}
-              style={styles.carouselSide}
+              style={{ width: sideSize, height: sideSize, opacity: 0.5 }}
               contentFit="contain"
             />
           )}
 
-          {/* next */}
           <Pressable style={styles.carouselArrow} onPress={() => go('next')}>
             <Text style={styles.carouselArrowText}>›</Text>
           </Pressable>
